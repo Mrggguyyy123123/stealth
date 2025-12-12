@@ -5,7 +5,12 @@ using CodeMonkey.Utils;
 
 public class bullet : MonoBehaviour
 {   
+   
     private UnityEngine.Vector3 shootDir;
+    private void Start()
+    {
+    Destroy(gameObject, 5f);
+    }
     public void Setup(UnityEngine.Vector3 shootDir)
     {
         this.shootDir = shootDir;
@@ -16,5 +21,15 @@ public class bullet : MonoBehaviour
     {
         float moveSpeed = 100f;
         transform.position += shootDir * moveSpeed *Time.deltaTime; 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+     GameHandle target = collision.GetComponent<GameHandle>();
+     if (target != null)
+        {
+            target.Damage(20);
+            Destroy(gameObject);
+        }   
     }
 }

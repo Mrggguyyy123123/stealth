@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded = true;
     private bool facingRight = true;
 
+    public Transform body;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,12 +43,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (moveX > 0 && !facingRight)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            body.localScale = new Vector3(1, 1, 1);
             facingRight = true;
         }
         else if (moveX < 0 && facingRight)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            body.localScale = new Vector3(-1, 1, 1);
             facingRight = false;
         }
     }
