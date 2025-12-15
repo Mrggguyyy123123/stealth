@@ -9,7 +9,7 @@ public class bullet : MonoBehaviour
     private UnityEngine.Vector3 shootDir;
     private void Start()
     {
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 2f);
     }
     public void Setup(UnityEngine.Vector3 shootDir)
     {

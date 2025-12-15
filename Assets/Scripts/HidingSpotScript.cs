@@ -4,74 +4,60 @@ using System.Collections;
 public class HidingSpotScript : MonoBehaviour
 {
     public Transform player;
+    public Transform Sprite_renderer_Player;
+    public Transform Sprite_renderer_Gun;
     private SpriteRenderer playerSprite;
+    private SpriteRenderer gunSprite;
     private Rigidbody2D playerRb;
     private bool playerInTrigger = false;
+    private Color originalColor;
+    public Collider player_collider;
     private bool isHidden = false;
 
     void Start()
     {
-        if (player != null)
-        {
-            playerSprite = player.GetComponent<SpriteRenderer>();
-            playerRb = player.GetComponent<Rigidbody2D>();
-        }
+
+
+        playerSprite = Sprite_renderer_Player.GetComponent<SpriteRenderer>();
+        gunSprite = Sprite_renderer_Player.GetComponent<SpriteRenderer>();
+        playerRb = player.GetComponent<Rigidbody2D>();
+    
     }
 
     void Update()
     {
         if (playerInTrigger && Input.GetKeyDown(KeyCode.E))
         {
-            if (!isHidden)
-                StartCoroutine(HidePlayer());
-            else
-                StartCoroutine(UnHidePlayer());
+            if (!isHidden){
+                HidePlayer();
+                Debug.Log("hidden");
+            }
+        }else if (isHidden && Input.GetKeyDown(KeyCode.E))
+        {
+            UnHidePlayer();
+            Debug.Log("Unhidden");
         }
     }
 
-    private IEnumerator HidePlayer()
+    private void HidePlayer()
     {
         isHidden = true;
 
-        // Disable physics so player won't interact
-        if (playerRb != null) playerRb.simulated = false;
 
-        float duration = 0.5f;
-        float elapsed = 0f;
+        playerRb.simulated = false;
+
+
         Color originalColor = playerSprite.color;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
-            playerSprite.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
-            yield return null;
-        }
 
         playerSprite.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
     }
 
-    private IEnumerator UnHidePlayer()
+    private void UnHidePlayer()
     {
         isHidden = false;
-
-        if (playerRb != null) playerRb.simulated = true;
-
-        float duration = 0.5f;
-        float elapsed = 0f;
-        Color originalColor = playerSprite.color;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(0f, 1f, elapsed / duration);
-            playerSprite.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
-            yield return null;
-        }
-
-        playerSprite.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
+        playerRb.simulated = true;
+        playerSprite.color = originalColor;
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

@@ -7,7 +7,8 @@ using System;
 
 
 public class Gun_aim : MonoBehaviour
-{
+{   
+    public int ammo;
     public event EventHandler<OnShootEventArgs> OnShoot;
     public class OnShootEventArgs : EventArgs
     {
@@ -43,13 +44,18 @@ public class Gun_aim : MonoBehaviour
 
     private void HandleShooting()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            UnityEngine.Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
-            OnShoot? .Invoke(this, new OnShootEventArgs {
-                gunEndPointPosition = aimGunEndPointTransform.position,
-                shootPosition = mousePosition,
-            });
+        if (ammo != 0){
+            if (Input.GetMouseButtonDown(0))
+            {
+                ammo=- 1;
+                UnityEngine.Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
+                OnShoot? .Invoke(this, new OnShootEventArgs {
+                    
+                    gunEndPointPosition = aimGunEndPointTransform.position,
+                    shootPosition = mousePosition,
+                });
+                
+            }
         }
     }
 }
