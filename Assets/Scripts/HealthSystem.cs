@@ -8,12 +8,17 @@ public class HealthSystem
     public event EventHandler OnDead;
     private int health;
     private int healthMax;
+
+    
+    
+
     public HealthSystem(int health)
     {
         this.health = health;
         this.healthMax = health;
     }
 
+    
     public int GetHealth()
     {
         return health;

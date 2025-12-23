@@ -4,10 +4,9 @@ using UnityEngine.SceneManagement;
 
 using System.Collections;
 
-public class GameHandle : MonoBehaviour
+public class dead_zone : MonoBehaviour
 {
     public Transform pfHealthBar;
-    public int maxHealth = 100;
     public SpriteRenderer spriteRenderer_player;
     public SpriteRenderer spriteRenderer_gun;
     private HealthSystem healthSystem;
@@ -27,31 +26,16 @@ public class GameHandle : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void Awake()
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Create health system
-        healthSystem = new HealthSystem(maxHealth);
-
-        // Spawn health bar
-        Transform healthBarTransform = Instantiate(pfHealthBar, transform);
-        healthBarTransform.localPosition = new Vector3(-1, 1, 0);
-        HealthBar healthBar = healthBarTransform.GetComponent<HealthBar>();
-        healthBar.Setup(healthSystem);
-
-        // Handle death
-        healthSystem.OnDead += delegate(object sender, System.EventArgs e)
+        if (collision.CompareTag("Player"))
         {
-            if (gameObject.CompareTag("Player")){
             Die();
-            }else
-            Destroy(gameObject); // destroy THIS GameObject
-            
-        };
+        }
     }
-
-    // Public method to take damage
     public void Damage(int amount)
     {
-        healthSystem.Damage(amount);
+        healthSystem.Damage(100);
     }
 }
